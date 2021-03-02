@@ -204,7 +204,8 @@ async function build() {
   // Clear build dir
   await fse.emptyDir(pathBuild);
 
-  // Copy static assets
+  // Copy static files
+  fse.copy(`${pathSrc}/root`, pathBuild);
   fse.copy(`${pathSrc}/assets`, `${pathBuild}/assets`);
   console.info("Copied assets");
 
