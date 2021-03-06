@@ -1,8 +1,8 @@
 {
-  "name": "store-of-something",
+  "name": "storeofbigmacs.com",
   "version": "0.1.0",
   "main": "index.js",
-  "repository": "https://github.com/alexk111/store-of-something.git",
+  "repository": "https://github.com/alexk111/StoreOfBigMacs.com",
   "author": "Alex Kaul",
   "license": "MIT",
   "private": true,
