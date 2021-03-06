@@ -185,6 +185,7 @@
       stored in
       <select class="sel-curr bitcoin-color">
         <option value="btc">Bitcoin</option>
+        <option value="local">Local Currency</option>
         <option value="usd">USD</option>
         <% Object.getOwnPropertyNames(something.stores).forEach((curr) => { %>
           <option value="<%= curr %>"><%= something.stores[curr] %></option>
@@ -465,9 +466,9 @@
       }
 
       if (curThingTimePriceIdx < thingTimePrice.length) {
-        if (selCurr !== "usd") {
+        if (selCurr !== "usd" && selCurr !== "local") {
           const thingFirstTime = thingTimePrice[curThingTimePriceIdx][0]; // anything before this timestamp should be ignored
-          const thingFirstPrice = thingTimePrice[curThingTimePriceIdx][1];
+          const thingFirstUsdPrice = thingTimePrice[curThingTimePriceIdx][1][0];
 
           const storeTimePrice = arrStoreTimePrice[selCurr];
 
@@ -482,7 +483,7 @@
             const storeFirstTime = storeTimePrice[curStoreTimePriceIdx][0];
             const storeFirstPrice = storeTimePrice[curStoreTimePriceIdx][1];
 
-            const lockedValueInCurr = thingFirstPrice / storeFirstPrice;
+            const lockedValueInCurr = thingFirstUsdPrice / storeFirstPrice;
 
             const datasetData = [];
 
@@ -494,20 +495,21 @@
 
               data.labels.push(timestampToYYYYMMDD(storeTimePrice[curStoreTimePriceIdx][0]));
               let curValueInUSD = lockedValueInCurr * storeTimePrice[curStoreTimePriceIdx][1];
-              datasetData.push(curValueInUSD / thingTimePrice[curThingTimePriceIdx][1]);
+              datasetData.push(curValueInUSD / thingTimePrice[curThingTimePriceIdx][1][0]);
 
               curStoreTimePriceIdx++;
             }
             dataset.data = datasetData
           }
         } else {
-          const lockedValueInCurr = thingTimePrice[curThingTimePriceIdx][1];
+          const thingCurrIdx = (selCurr === "usd" ? 0 : 1);
+          const lockedValueInCurr = thingTimePrice[curThingTimePriceIdx][1][thingCurrIdx];
 
           const datasetData = [];
 
           for (; curThingTimePriceIdx < thingTimePrice.length; curThingTimePriceIdx++) {
             data.labels.push(timestampToYYYYMMDD(thingTimePrice[curThingTimePriceIdx][0]));
-            datasetData.push(lockedValueInCurr / thingTimePrice[curThingTimePriceIdx][1]);
+            datasetData.push(lockedValueInCurr / thingTimePrice[curThingTimePriceIdx][1][thingCurrIdx]);
           }
           dataset.data = datasetData
         }

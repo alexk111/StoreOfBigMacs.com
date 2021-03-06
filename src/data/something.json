@@ -14,7 +14,8 @@
   "csvColumnNames": {
     "date": "date",
     "category": "name",
-    "usdPrice": "dollar_price"
+    "usdPrice": "dollar_price",
+    "localPrice": "local_price"
   },
   "stores": {
     "xau": "Gold",

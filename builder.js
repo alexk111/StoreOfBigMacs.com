@@ -16,7 +16,7 @@ const isDevMode = process.env.NODE_ENV === "development";
 
 const something = require(`${pathSrc}/data/something.json`);
 
-const thingPrices = {}; // thing price history in USD
+const thingPrices = {}; // thing price history in USD/Local
 const bitcoinPrices = {}; // Bitcoin price history in USD/XAU/XAG
 const storePrices = {}; // BTC/XAU/XAG price history in USD
 
@@ -46,7 +46,8 @@ async function loadThingPricesFromCSV(filePath) {
 
         if (arrDate[0] * 1 >= something.year.from) {
           const strCategory = data[something.csvColumnNames.category];
-          const strPrice = data[something.csvColumnNames.usdPrice];
+          const strUsdPrice = data[something.csvColumnNames.usdPrice];
+          const strLocalPrice = data[something.csvColumnNames.localPrice];
           if (thingPrices[strCategory] === undefined) {
             thingPrices[strCategory] = {};
           }
@@ -58,7 +59,7 @@ async function loadThingPricesFromCSV(filePath) {
           }
           thingPrices[strCategory][arrDate[0]][arrDate[1]][
             arrDate[2]
-          ] = strPriceToNum(strPrice);
+          ] = [strPriceToNum(strUsdPrice), strPriceToNum(strLocalPrice)];
         }
       })
       .on("end", () => {
